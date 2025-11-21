@@ -16,10 +16,6 @@ class AuthController extends BaseAuthController
      */
     protected function redirectPath(): string
     {
-        if(Admin::user()->isRole('channel')){
-            return admin_base_path('/car-channel/list');
-        }
-
-        return admin_base_path('/order/list');
+        return admin_base_path('/ware/statistics');
     }
 }

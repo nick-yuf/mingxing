@@ -21,7 +21,7 @@ class HomeController extends Controller
             $name[$k] = ucwords($n);
         }
         $name = implode('', $name) . 'Model';
-        $table = 'ys_' . $table;
+        $table = 'mx_' . $table;
 
         $rs = DB::select("show COLUMNS FROM " . $table);
 

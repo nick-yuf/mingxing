@@ -13,6 +13,13 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
 
+    //ware
+    $router->group(['prefix' => 'ware'], function (Router $route) {
+        $route->resource('goods', 'WareGoodsController')->names('ware#goods');
+        $route->resource('logistics', 'WareLogisticsController')->names('ware#logistics');
+        $route->resource('statistics', 'WareStatisticsController')->names('ware#statistics');
+    });
+
     //order
     $router->group(['prefix' => 'order'], function (Router $route) {
         $route->resource('list', 'OrderController')->names('order#list');
@@ -41,10 +48,6 @@ Route::group([
         $route->resource('list', 'PayeesController');
     });
 
-    //luggage
-    $router->group(['prefix' => 'luggage'], function (Router $route) {
-        $route->resource('list', 'LuggageController')->names('luggage#list');
-    });
 
     //chart
     $router->group(['prefix' => 'chart'], function (Router $route) {

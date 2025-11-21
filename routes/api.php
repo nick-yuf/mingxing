@@ -51,6 +51,10 @@ $api->version(
             $api->any('select-list', 'PayeesController@selectList')->name('payees#select-list');
         });
 
+        $api->group(['prefix' => 'ware'], function ($api) {
+            $api->any('goods', 'WareController@goods')->name('ware#goods');
+        });
+
     }
 );
 
