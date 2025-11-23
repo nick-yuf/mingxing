@@ -21,7 +21,7 @@ class WareLogisticsController extends BaseController
 
     public function __construct()
     {
-        $this->title = __('Car type');
+        $this->title = __('物流明细');
     }
 
     /**
@@ -45,33 +45,10 @@ class WareLogisticsController extends BaseController
 
         $grid->actions(function ($actions) {
             $actions->disableView();
-            $actions->disableDelete();
-            $actions->add(new CarCase());
         });
 
         return $grid;
     }
-
-
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id): Show
-    {
-        $show = new Show(WareGoodsModel::findOrFail($id));
-
-        $show->field(CarModel::F_car_type, __('Car type'));
-        $show->field(CarModel::F_desc, __('Description'));
-        $show->field(CarModel::F_images, __('Image'))->image();
-        $show->field(CarModel::F_created_at, __('Created at'));
-        $show->field(CarModel::F_updated_at, __('Updated at'));
-
-        return $show;
-    }
-
 
     /**
      * Make a form builder.

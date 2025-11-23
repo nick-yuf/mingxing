@@ -16,38 +16,17 @@ Route::group([
     //ware
     $router->group(['prefix' => 'ware'], function (Router $route) {
         $route->resource('goods', 'WareGoodsController')->names('ware#goods');
+        $route->resource('tools', 'WareToolsController')->names('ware#tools');
+        $route->resource('box', 'WareBoxController')->names('ware#box');
         $route->resource('logistics', 'WareLogisticsController')->names('ware#logistics');
         $route->resource('statistics', 'WareStatisticsController')->names('ware#statistics');
     });
 
-    //order
-    $router->group(['prefix' => 'order'], function (Router $route) {
-        $route->resource('list', 'OrderController')->names('order#list');
-        $route->get('tab-form', 'OrderController@tabForm')->name('order#tab-form');
+    //team
+    $router->group(['prefix' => 'team'], function (Router $route) {
+        $route->resource('staff', 'TeamStaffController')->names('ware#staff');
+        $route->resource('worker', 'TeamWorkerController')->names('ware#worker');
     });
-
-    //platform order
-    $router->group(['prefix' => 'platform-order'], function (Router $route) {
-        $route->resource('list', 'PlatformOrderController')->names('platform-order#list');
-    });
-
-    //car
-    $router->group(['prefix' => 'car'], function (Router $route) {
-        $route->resource('list', 'CarController')->names('car#list');
-        $route->resource('case-list', 'CarCaseController')->names('car#case-list');
-    });
-
-    //car-channel
-    $router->group(['prefix' => 'car-channel'], function (Router $route) {
-        $route->resource('list', 'CarChannelController')->names('car-channel#list');
-        $route->resource('case-list', 'CarCaseController')->names('car-channel#case-list');
-    });
-
-    //payees
-    $router->group(['prefix' => 'payees'], function (Router $route) {
-        $route->resource('list', 'PayeesController');
-    });
-
 
     //chart
     $router->group(['prefix' => 'chart'], function (Router $route) {

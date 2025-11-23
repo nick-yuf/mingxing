@@ -5,9 +5,9 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\Car\CarCase;
 
 use App\Models\WareGoodsModel;
+use App\Models\WareToolsModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Show;
 
 class WareToolsController extends BaseController
 {
@@ -30,42 +30,22 @@ class WareToolsController extends BaseController
      */
     protected function grid(): Grid
     {
-        $grid = new Grid(new WareGoodsModel());
-        $grid->column(WareGoodsModel::F_id, __('ID'))->sortable();
-        $grid->column(WareGoodsModel::F_goods_name, __('货物名称'));
-        $grid->column(WareGoodsModel::F_goods_spec, __('货物规格'));
+        $grid = new Grid(new WareToolsModel());
+        $grid->column(WareToolsModel::F_id, __('ID'))->sortable();
+        $grid->column(WareToolsModel::F_tools_name, __('工具名称'));
+        $grid->column(WareToolsModel::F_tools_param, __('工具参数'));
+        $grid->column(WareToolsModel::F_tools_total, __('数量'));
+        $grid->column(WareToolsModel::F_remark, __('备注'));
 
         $grid->disableExport();
 
         $grid->actions(function ($actions) {
             $actions->disableView();
-            $actions->disableDelete();
-            $actions->add(new CarCase());
+           // $actions->disableDelete();
         });
 
         return $grid;
     }
-
-
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id): Show
-    {
-        $show = new Show(WareGoodsModel::findOrFail($id));
-
-        $show->field(CarModel::F_car_type, __('Car type'));
-        $show->field(CarModel::F_desc, __('Description'));
-        $show->field(CarModel::F_images, __('Image'))->image();
-        $show->field(CarModel::F_created_at, __('Created at'));
-        $show->field(CarModel::F_updated_at, __('Updated at'));
-
-        return $show;
-    }
-
 
     /**
      * Make a form builder.
@@ -74,10 +54,13 @@ class WareToolsController extends BaseController
      */
     protected function form(): Form
     {
-        $form = new Form(new WareGoodsModel());
+        $form = new Form(new WareToolsModel());
 
-        $form->text(WareGoodsModel::F_goods_name, __('货物名称'))->required();
-        $form->text(WareGoodsModel::F_goods_spec, __('货物规格'))->required();
+        $form->text(WareToolsModel::F_tools_name, __('工具名称'))->required();
+        $form->text(WareToolsModel::F_tools_param, __('工具参数'))->required();
+        $form->text(WareToolsModel::F_tools_total, __('数量'))->default(0);
+        $form->textarea(WareToolsModel::F_remark, __('备注'));
+
         $form->footer(function ($footer) {
             // 去掉`查看`checkbox
             $footer->disableViewCheck();
