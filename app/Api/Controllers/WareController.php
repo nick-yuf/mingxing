@@ -28,5 +28,4 @@ class WareController extends Controller
         return $this->response->array($this->logic->goods());
     }
 
-
 }

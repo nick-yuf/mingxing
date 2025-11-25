@@ -28,6 +28,13 @@ Route::group([
         $route->resource('worker', 'TeamWorkerController')->names('ware#worker');
     });
 
+    //info
+    $router->group(['prefix' => 'info'], function (Router $route) {
+        $route->resource('container', 'InfoContainerController')->names('info#container');
+        $route->resource('load', 'InfoLoadController')->names('info#load');
+        $route->resource('pack', 'InfoPackController')->names('info#pack');
+    });
+
     //chart
     $router->group(['prefix' => 'chart'], function (Router $route) {
         $route->resource('index', 'ChartController@index')->names('chart#index');

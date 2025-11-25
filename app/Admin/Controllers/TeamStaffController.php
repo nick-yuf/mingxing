@@ -17,7 +17,7 @@ class TeamStaffController extends BaseController
 
     public function __construct()
     {
-        $this->title = __(TeamStaffModel::table_name);
+        $this->title = __(TeamStaffModel::$tableComment);
     }
 
     /**

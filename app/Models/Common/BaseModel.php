@@ -16,6 +16,7 @@ class BaseModel extends Model
 
     public $timestamps = true;
 
+    static public $tableComment = '';
     public function updateById($id, $data)
     {
         if (!$id) {

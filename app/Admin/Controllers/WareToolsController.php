@@ -2,9 +2,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Actions\Car\CarCase;
-
-use App\Models\WareGoodsModel;
 use App\Models\WareToolsModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -20,7 +17,7 @@ class WareToolsController extends BaseController
 
     public function __construct()
     {
-        $this->title = __('tools');
+        $this->title = __(WareToolsModel::$tableComment);
     }
 
     /**
@@ -32,16 +29,15 @@ class WareToolsController extends BaseController
     {
         $grid = new Grid(new WareToolsModel());
         $grid->column(WareToolsModel::F_id, __('ID'))->sortable();
-        $grid->column(WareToolsModel::F_tools_name, __('工具名称'));
-        $grid->column(WareToolsModel::F_tools_param, __('工具参数'));
-        $grid->column(WareToolsModel::F_tools_total, __('数量'));
-        $grid->column(WareToolsModel::F_remark, __('备注'));
+        $grid->column(WareToolsModel::F_tools_name, __(WareToolsModel::Note[WareToolsModel::F_tools_name]));
+        $grid->column(WareToolsModel::F_tools_param, __(WareToolsModel::Note[WareToolsModel::F_tools_param]));
+        $grid->column(WareToolsModel::F_tools_total, __(WareToolsModel::Note[WareToolsModel::F_tools_total]));
+        $grid->column(WareToolsModel::F_remark, __(WareToolsModel::Note[WareToolsModel::F_remark]));
 
         $grid->disableExport();
 
         $grid->actions(function ($actions) {
             $actions->disableView();
-           // $actions->disableDelete();
         });
 
         return $grid;
@@ -56,18 +52,16 @@ class WareToolsController extends BaseController
     {
         $form = new Form(new WareToolsModel());
 
-        $form->text(WareToolsModel::F_tools_name, __('工具名称'))->required();
-        $form->text(WareToolsModel::F_tools_param, __('工具参数'))->required();
-        $form->text(WareToolsModel::F_tools_total, __('数量'))->default(0);
-        $form->textarea(WareToolsModel::F_remark, __('备注'));
+        $form->text(WareToolsModel::F_tools_name, __(WareToolsModel::Note[WareToolsModel::F_tools_name]))->required();
+        $form->text(WareToolsModel::F_tools_param, __(WareToolsModel::Note[WareToolsModel::F_tools_param]))->required();
+        $form->text(WareToolsModel::F_tools_total, __(WareToolsModel::Note[WareToolsModel::F_tools_total]))->default(0);
+        $form->textarea(WareToolsModel::F_remark, __(WareToolsModel::Note[WareToolsModel::F_remark]));
 
         $form->footer(function ($footer) {
-            // 去掉`查看`checkbox
             $footer->disableViewCheck();
-            // 去掉`继续编辑`checkbox
             $footer->disableEditingCheck();
-            // 去掉`继续创建`checkbox
             $footer->disableCreatingCheck();
+            $footer->disableReset();
         });
 
         return $form;

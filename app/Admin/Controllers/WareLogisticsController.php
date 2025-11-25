@@ -2,13 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Actions\Car\CarCase;
-
-use App\Models\WareGoodsModel;
 use App\Models\WareLogisticsModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Show;
 
 class WareLogisticsController extends BaseController
 {
@@ -21,7 +17,7 @@ class WareLogisticsController extends BaseController
 
     public function __construct()
     {
-        $this->title = __('物流明细');
+        $this->title = __(WareLogisticsModel::$tableComment);
     }
 
     /**
@@ -33,13 +29,14 @@ class WareLogisticsController extends BaseController
     {
         $grid = new Grid(new WareLogisticsModel());
         $grid->column(WareLogisticsModel::F_id, __('ID'))->sortable();
-        $grid->column(WareLogisticsModel::F_goods_id, __('货物名称'))->display(function ($id) {
-            $row = WareGoodsModel::getInstance()->getOneById($id);
-            return "{$row[WareGoodsModel::F_goods_name]}";
-        });;
-        $grid->column(WareLogisticsModel::F_action, __('行为'))
+        $grid->column('goods.goods_name', __(WareLogisticsModel::Note[WareLogisticsModel::F_goods_id]));
+        $grid->column(WareLogisticsModel::F_count, __(WareLogisticsModel::Note[WareLogisticsModel::F_count]));
+        $grid->column(WareLogisticsModel::F_action, __(WareLogisticsModel::Note[WareLogisticsModel::F_action]))
             ->editable('select', WareLogisticsModel::rtnEnumLang(WareLogisticsModel::ActionArray))->width(100);
-        $grid->column(WareLogisticsModel::F_count, __('数量'));
+        $grid->column(WareLogisticsModel::F_is_save, __(WareLogisticsModel::Note[WareLogisticsModel::F_is_save]))
+            ->editable('select', WareLogisticsModel::rtnEnumLang(WareLogisticsModel::IsSaveArray))->width(100);
+        $grid->column('worker.worker_no', __(WareLogisticsModel::Note[WareLogisticsModel::F_worker_id]));
+        $grid->column('staff.staff_name', __(WareLogisticsModel::Note[WareLogisticsModel::F_staff_id]));
 
         $grid->disableExport();
 
@@ -59,16 +56,26 @@ class WareLogisticsController extends BaseController
     {
         $form = new Form(new WareLogisticsModel());
 
-        $form->select(WareLogisticsModel::F_goods_id, __('货物'))->options('/api/ware/goods')->required()->default(1);
-        $form->select(WareLogisticsModel::F_action, __('行为'))->options($this->setLang(WareLogisticsModel::ActionArray))->default(WareLogisticsModel::action_1);
-        $form->text(WareLogisticsModel::F_count, __('数量'))->required();
+        $form->select(WareLogisticsModel::F_goods_id, __(WareLogisticsModel::Note[WareLogisticsModel::F_goods_id]))->options('/api/ware/goods')->required();
+        $form->radio(WareLogisticsModel::F_action, __(WareLogisticsModel::Note[WareLogisticsModel::F_action]))
+            ->options($this->setLang(WareLogisticsModel::ActionArray))->default(WareLogisticsModel::action_1);
+        $form->date(WareLogisticsModel::F_action_date,__(WareLogisticsModel::Note[WareLogisticsModel::F_action_date]))->required();
+        $form->number(WareLogisticsModel::F_count, __(WareLogisticsModel::Note[WareLogisticsModel::F_count]))->required();
+        //暂时默认入库
+        // $form->radio(WareLogisticsModel::F_is_save, __(WareLogisticsModel::Note[WareLogisticsModel::F_is_save]))
+        //     ->options($this->setLang(WareLogisticsModel::IsSaveArray))->default(WareLogisticsModel::is_save_0);
+        $form->select(WareLogisticsModel::F_worker_id, __(WareLogisticsModel::Note[WareLogisticsModel::F_worker_id]))->options('/api/team/worker')->default(0);
+        $form->select(WareLogisticsModel::F_staff_id, __(WareLogisticsModel::Note[WareLogisticsModel::F_staff_id]))->options('/api/team/staff')->required();
+
+        $form->saved(function (Form $form) {
+            //录入一条统计数据
+        });
+
         $form->footer(function ($footer) {
-            // 去掉`查看`checkbox
             $footer->disableViewCheck();
-            // 去掉`继续编辑`checkbox
             $footer->disableEditingCheck();
-            // 去掉`继续创建`checkbox
             $footer->disableCreatingCheck();
+            $footer->disableReset();
         });
 
         return $form;

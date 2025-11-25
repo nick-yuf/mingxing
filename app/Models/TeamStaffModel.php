@@ -13,13 +13,13 @@ class TeamStaffModel extends BaseModel
      * 表名
      */
     protected $table='mx_team_staff';
-    const table_name='员工数据';
 
     /*
      * 数据库字段
      */
     const F_id = 'id',F_staff_name = 'staff_name',F_staff_job = 'staff_job',F_staff_type = 'staff_type',F_staff_status = 'staff_status',F_contact = 'contact',F_created_at = 'created_at',F_updated_at = 'updated_at',F_deleted_at = 'deleted_at';
 
+    public static $tableComment='员工数据';
     const Note = [
         self::F_staff_name => '员工名称',
         self::F_staff_job => '工作职责',

@@ -5,13 +5,11 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\Car\CarCase;
 
 use App\Models\WareGoodsModel;
-use App\Models\WareLogisticsModel;
-use App\Models\WareStatisticsModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class WareStatisticsController extends BaseController
+class InfoPackController extends BaseController
 {
     /**
      * Title for current resource.
@@ -22,7 +20,7 @@ class WareStatisticsController extends BaseController
 
     public function __construct()
     {
-        $this->title = __(WareStatisticsModel::$tableComment);
+        $this->title = __('box');
     }
 
     /**
@@ -32,13 +30,10 @@ class WareStatisticsController extends BaseController
      */
     protected function grid(): Grid
     {
-        $grid = new Grid(new WareStatisticsModel());
-        $grid->column(WareStatisticsModel::F_id, __('ID'))->sortable();
-        $grid->column(WareStatisticsModel::F_goods_id, __('货物名称'))->display(function ($id) {
-            $row = WareGoodsModel::getInstance()->getOneById($id);
-            return "{$row[WareGoodsModel::F_goods_name]}";
-        });;
-        $grid->column(WareStatisticsModel::F_sum, __('库存总数'));
+        $grid = new Grid(new WareGoodsModel());
+        $grid->column(WareGoodsModel::F_id, __('ID'))->sortable();
+        $grid->column(WareGoodsModel::F_goods_name, __('货物名称'));
+        $grid->column(WareGoodsModel::F_goods_spec, __('货物规格'));
 
         $grid->disableExport();
 
@@ -79,16 +74,17 @@ class WareStatisticsController extends BaseController
      */
     protected function form(): Form
     {
-        $form = new Form(new WareLogisticsModel());
+        $form = new Form(new WareGoodsModel());
 
-        $form->select(WareLogisticsModel::F_goods_id, __('货物'))->options('/api/ware/goods')->required()->default(1);
-        $form->select(WareLogisticsModel::F_action, __('行为'))->options($this->setLang(WareLogisticsModel::ActionArray))->default(WareLogisticsModel::action_1);
-        $form->text(WareLogisticsModel::F_count, __('数量'))->required();
+        $form->text(WareGoodsModel::F_goods_name, __('货物名称'))->required();
+        $form->text(WareGoodsModel::F_goods_spec, __('货物规格'))->required();
         $form->footer(function ($footer) {
+            // 去掉`查看`checkbox
             $footer->disableViewCheck();
+            // 去掉`继续编辑`checkbox
             $footer->disableEditingCheck();
+            // 去掉`继续创建`checkbox
             $footer->disableCreatingCheck();
-            $footer->disableReset();
         });
 
         return $form;

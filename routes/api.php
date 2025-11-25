@@ -35,26 +35,14 @@ $api->version(
             $api->any('create-model', 'HomeController@createModel')->name('createModel');
         });
 
-        $api->group(['prefix' => 'order'], function ($api) {
-            $api->any('change-status', 'OrderController@changeStatus')->name('order#change-status');
-            $api->any('platform-order', 'OrderController@platformOrder')->name('order#platform-order');
-        });
-
-        $api->group(['prefix' => 'car'], function ($api) {
-            $api->any('list', 'CarController@list')->name('car#list');
-            $api->any('select-list', 'CarController@selectList')->name('car#select-list');
-            $api->any('recommend', 'CarController@recommend')->name('car#recommend');
-        });
-
-        $api->group(['prefix' => 'payees'], function ($api) {
-            $api->any('list', 'PayeesController@list')->name('payees#list');
-            $api->any('select-list', 'PayeesController@selectList')->name('payees#select-list');
-        });
-
         $api->group(['prefix' => 'ware'], function ($api) {
             $api->any('goods', 'WareController@goods')->name('ware#goods');
         });
 
+        $api->group(['prefix' => 'team'], function ($api) {
+            $api->any('worker', 'TeamController@workerList')->name('team#workerList');
+            $api->any('staff', 'TeamController@staffList')->name('team#staffList');
+        });
     }
 );
 

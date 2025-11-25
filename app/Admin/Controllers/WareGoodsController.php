@@ -2,12 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Actions\Car\CarCase;
-
 use App\Models\WareGoodsModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Show;
 
 class WareGoodsController extends BaseController
 {
@@ -20,7 +17,7 @@ class WareGoodsController extends BaseController
 
     public function __construct()
     {
-        $this->title = __('goods');
+        $this->title = __(WareGoodsModel::$tableComment);
     }
 
     /**
@@ -32,9 +29,9 @@ class WareGoodsController extends BaseController
     {
         $grid = new Grid(new WareGoodsModel());
         $grid->column(WareGoodsModel::F_id, __('ID'))->sortable();
-        $grid->column(WareGoodsModel::F_goods_name, __('货物名称'));
-        $grid->column(WareGoodsModel::F_goods_spec, __('货物规格'));
-        $grid->column(WareGoodsModel::F_remark, __('备注'));
+        $grid->column(WareGoodsModel::F_goods_name, __(WareGoodsModel::Note[WareGoodsModel::F_goods_name]));
+        $grid->column(WareGoodsModel::F_goods_spec, __(WareGoodsModel::Note[WareGoodsModel::F_goods_spec]));
+        $grid->column(WareGoodsModel::F_remark, __(WareGoodsModel::Note[WareGoodsModel::F_remark]));
 
         $grid->disableExport();
 
@@ -54,16 +51,14 @@ class WareGoodsController extends BaseController
     {
         $form = new Form(new WareGoodsModel());
 
-        $form->text(WareGoodsModel::F_goods_name, __('货物名称'))->required();
-        $form->text(WareGoodsModel::F_goods_spec, __('货物规格'))->required();
-        $form->textarea(WareGoodsModel::F_remark, __('备注'));
+        $form->text(WareGoodsModel::F_goods_name, __(WareGoodsModel::Note[WareGoodsModel::F_goods_name]))->required();
+        $form->text(WareGoodsModel::F_goods_spec, __(WareGoodsModel::Note[WareGoodsModel::F_goods_spec]))->required();
+        $form->textarea(WareGoodsModel::F_remark, __(WareGoodsModel::Note[WareGoodsModel::F_remark]));
         $form->footer(function ($footer) {
-            // 去掉`查看`checkbox
             $footer->disableViewCheck();
-            // 去掉`继续编辑`checkbox
             $footer->disableEditingCheck();
-            // 去掉`继续创建`checkbox
             $footer->disableCreatingCheck();
+            $footer->disableReset();
         });
 
         return $form;

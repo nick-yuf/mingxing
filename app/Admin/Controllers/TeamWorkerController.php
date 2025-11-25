@@ -17,7 +17,7 @@ class TeamWorkerController extends BaseController
 
     public function __construct()
     {
-        $this->title = __(TeamWorkerModel::table_name);
+        $this->title = __(TeamWorkerModel::$tableComment);
     }
 
     /**
@@ -30,8 +30,9 @@ class TeamWorkerController extends BaseController
         $grid = new Grid(new TeamWorkerModel());
         $grid->column(TeamWorkerModel::F_id, __('ID'))->sortable();
         $grid->column(TeamWorkerModel::F_worker_no, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_no]));
-        $grid->column(TeamWorkerModel::F_worker_name, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_name]));
-        $grid->column(TeamWorkerModel::F_worker_contact, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_contact]));
+        $grid->column(TeamWorkerModel::F_worker_cost, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_cost]));
+        $grid->column(TeamWorkerModel::F_worker_deposit, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_deposit]));
+        $grid->column(TeamWorkerModel::F_remark, __(TeamWorkerModel::Note[TeamWorkerModel::F_remark]));
         $grid->column(TeamWorkerModel::F_status, __(TeamWorkerModel::Note[TeamWorkerModel::F_status]))
             ->editable('select', TeamWorkerModel::rtnEnumLang(TeamWorkerModel::StatusArray))->width(100);
 
@@ -53,8 +54,11 @@ class TeamWorkerController extends BaseController
         $form = new Form(new TeamWorkerModel());
 
         $form->text(TeamWorkerModel::F_worker_no, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_no]))->required();
-        $form->text(TeamWorkerModel::F_worker_name, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_name]))->required();
-        $form->text(TeamWorkerModel::F_worker_contact, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_contact]))->required();
+        $form->text(TeamWorkerModel::F_worker_name, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_name]));
+        $form->text(TeamWorkerModel::F_worker_contact, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_contact]));
+        $form->text(TeamWorkerModel::F_worker_cost, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_cost]))->required()->default(0);
+        $form->text(TeamWorkerModel::F_worker_deposit, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_deposit]))->required()->default(0);
+        $form->textarea(TeamWorkerModel::F_remark, __(TeamWorkerModel::Note[TeamWorkerModel::F_remark]));
         $form->radio(TeamWorkerModel::F_status, __(TeamWorkerModel::Note[TeamWorkerModel::F_status]))
             ->options($this->setLang(TeamWorkerModel::StatusArray))->default(TeamWorkerModel::status_1);
 
