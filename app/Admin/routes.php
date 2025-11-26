@@ -30,9 +30,15 @@ Route::group([
 
     //info
     $router->group(['prefix' => 'info'], function (Router $route) {
-        $route->resource('container', 'InfoContainerController')->names('info#container');
+        $route->resource('orchard', 'InfoOrchardController')->names('info#orchard');
+        $route->resource('strip', 'InfoStripController')->names('info#strip');
         $route->resource('load', 'InfoLoadController')->names('info#load');
         $route->resource('pack', 'InfoPackController')->names('info#pack');
+    });
+
+    //finance
+    $router->group(['prefix' => 'finance'], function (Router $route) {
+        $route->resource('contract', 'FinanceContractController')->names('finance#contract');
     });
 
     //chart

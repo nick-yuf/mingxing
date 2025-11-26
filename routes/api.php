@@ -39,6 +39,10 @@ $api->version(
             $api->any('goods', 'WareController@goods')->name('ware#goods');
         });
 
+        $api->group(['prefix' => 'finance'], function ($api) {
+            $api->any('contract', 'FinanceController@contract')->name('finance#contract');
+        });
+
         $api->group(['prefix' => 'team'], function ($api) {
             $api->any('worker', 'TeamController@workerList')->name('team#workerList');
             $api->any('staff', 'TeamController@staffList')->name('team#staffList');

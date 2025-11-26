@@ -4,10 +4,9 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Car\CarCase;
 
-use App\Models\WareGoodsModel;
+use App\Models\InfoLoadModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Show;
 
 class InfoLoadController extends BaseController
 {
@@ -20,7 +19,7 @@ class InfoLoadController extends BaseController
 
     public function __construct()
     {
-        $this->title = __('box');
+        $this->title = __(InfoLoadModel::$tableComment);
     }
 
     /**
@@ -30,10 +29,12 @@ class InfoLoadController extends BaseController
      */
     protected function grid(): Grid
     {
-        $grid = new Grid(new WareGoodsModel());
-        $grid->column(WareGoodsModel::F_id, __('ID'))->sortable();
-        $grid->column(WareGoodsModel::F_goods_name, __('货物名称'));
-        $grid->column(WareGoodsModel::F_goods_spec, __('货物规格'));
+        $grid = new Grid(new InfoLoadModel());
+        $grid->column(InfoLoadModel::F_id, __('ID'))->sortable();
+        $grid->column(InfoLoadModel::F_pack_id, __(InfoLoadModel::Note[InfoLoadModel::F_pack_id]));
+        $grid->column(InfoLoadModel::F_container_id, __(InfoLoadModel::Note[InfoLoadModel::F_container_id]));
+        $grid->column(InfoLoadModel::F_count, __(InfoLoadModel::Note[InfoLoadModel::F_count]));
+        $grid->column(InfoLoadModel::F_action, __(InfoLoadModel::Note[InfoLoadModel::F_action]));
 
         $grid->disableExport();
 
@@ -46,27 +47,6 @@ class InfoLoadController extends BaseController
         return $grid;
     }
 
-
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id): Show
-    {
-        $show = new Show(WareGoodsModel::findOrFail($id));
-
-        $show->field(CarModel::F_car_type, __('Car type'));
-        $show->field(CarModel::F_desc, __('Description'));
-        $show->field(CarModel::F_images, __('Image'))->image();
-        $show->field(CarModel::F_created_at, __('Created at'));
-        $show->field(CarModel::F_updated_at, __('Updated at'));
-
-        return $show;
-    }
-
-
     /**
      * Make a form builder.
      *
@@ -74,17 +54,19 @@ class InfoLoadController extends BaseController
      */
     protected function form(): Form
     {
-        $form = new Form(new WareGoodsModel());
+        $form = new Form(new InfoLoadModel());
 
-        $form->text(WareGoodsModel::F_goods_name, __('货物名称'))->required();
-        $form->text(WareGoodsModel::F_goods_spec, __('货物规格'))->required();
+        $form->text(InfoLoadModel::F_pack_id, __(InfoLoadModel::Note[InfoLoadModel::F_pack_id]))->required();
+        $form->text(InfoLoadModel::F_container_id, __(InfoLoadModel::Note[InfoLoadModel::F_container_id]))->required();
+        $form->text(InfoLoadModel::F_count, __(InfoLoadModel::Note[InfoLoadModel::F_count]))->required();
+        $form->select(InfoLoadModel::F_action, __(InfoLoadModel::Note[InfoLoadModel::F_action]))
+            ->options($this->setLang(InfoLoadModel::ActionArray))->default(InfoLoadModel::action_1);
+
         $form->footer(function ($footer) {
-            // 去掉`查看`checkbox
             $footer->disableViewCheck();
-            // 去掉`继续编辑`checkbox
             $footer->disableEditingCheck();
-            // 去掉`继续创建`checkbox
             $footer->disableCreatingCheck();
+            $footer->disableReset();
         });
 
         return $form;
