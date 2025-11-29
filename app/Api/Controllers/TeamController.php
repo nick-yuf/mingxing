@@ -24,7 +24,7 @@ class TeamController extends Controller
     public function workerList(WareRequest $request): Response
     {
         $request->validate(__FUNCTION__);
-        return $this->response->array($this->logic->workerList());
+        return $this->response->array($this->logic->workerList($request->get('type',0)));
     }
 
     /**

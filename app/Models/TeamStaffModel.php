@@ -9,6 +9,8 @@ use App\Models\Common\BaseModel;
 
 class TeamStaffModel extends BaseModel
 {
+    use SingletonTrait;
+
     /**
      * 表名
      */
@@ -41,4 +43,10 @@ class TeamStaffModel extends BaseModel
         self::staff_status_1 => '在职',
         self::staff_status_2 => '离职',
     ];
+    public function getOneById($id)
+    {
+        return self::query()
+            ->where(self::F_id, $id)
+            ->first();
+    }
 }

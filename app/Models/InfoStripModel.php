@@ -20,7 +20,7 @@ class InfoStripModel extends BaseModel
      */
     const F_id = 'id',F_strip_no = 'strip_no',F_arrive_date = 'arrive_date',F_close_date = 'close_date',F_leave_date = 'leave_date',F_box_total = 'box_total',F_boxA_total = 'boxA_total',F_boxB_total = 'boxB_total',F_staff_id = 'staff_id',F_worker_id = 'worker_id',F_created_at = 'created_at',F_updated_at = 'updated_at',F_deleted_at = 'deleted_at';
 
-    public static $tableComment='柜子列表';
+    public static $tableComment='柜子数据';
 
     const Note = [
         self::F_strip_no => '柜子编号',

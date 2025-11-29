@@ -5,6 +5,11 @@ namespace App\Admin\Controllers;
 use App\Models\TeamWorkerModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Widgets\Alert;
+use Encore\Admin\Widgets\Box;
+use Encore\Admin\Widgets\InfoBox;
+use Encore\Admin\Widgets\Tab;
+use Encore\Admin\Widgets\Table;
 
 class TeamWorkerController extends BaseController
 {
@@ -30,11 +35,13 @@ class TeamWorkerController extends BaseController
         $grid = new Grid(new TeamWorkerModel());
         $grid->column(TeamWorkerModel::F_id, __('ID'))->sortable();
         $grid->column(TeamWorkerModel::F_worker_no, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_no]));
-        $grid->column(TeamWorkerModel::F_worker_cost, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_cost]));
-        $grid->column(TeamWorkerModel::F_worker_deposit, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_deposit]));
-        $grid->column(TeamWorkerModel::F_remark, __(TeamWorkerModel::Note[TeamWorkerModel::F_remark]));
+        $grid->column('1', __(TeamWorkerModel::Note[TeamWorkerModel::F_remark]))->modal(__(TeamWorkerModel::Note[TeamWorkerModel::F_remark]), function ($model) {
+           return new Box('',$model[TeamWorkerModel::F_remark]);
+        })->width(100);
         $grid->column(TeamWorkerModel::F_status, __(TeamWorkerModel::Note[TeamWorkerModel::F_status]))
             ->editable('select', TeamWorkerModel::rtnEnumLang(TeamWorkerModel::StatusArray))->width(100);
+        $grid->column(TeamWorkerModel::F_type, __(TeamWorkerModel::Note[TeamWorkerModel::F_type]))
+            ->editable('select', TeamWorkerModel::rtnEnumLang(TeamWorkerModel::TypeArray))->width(100);
 
         $grid->disableExport();
         $grid->actions(function ($actions) {
@@ -56,11 +63,11 @@ class TeamWorkerController extends BaseController
         $form->text(TeamWorkerModel::F_worker_no, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_no]))->required();
         $form->text(TeamWorkerModel::F_worker_name, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_name]));
         $form->text(TeamWorkerModel::F_worker_contact, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_contact]));
-        $form->text(TeamWorkerModel::F_worker_cost, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_cost]))->required()->default(0);
-        $form->text(TeamWorkerModel::F_worker_deposit, __(TeamWorkerModel::Note[TeamWorkerModel::F_worker_deposit]))->required()->default(0);
         $form->textarea(TeamWorkerModel::F_remark, __(TeamWorkerModel::Note[TeamWorkerModel::F_remark]));
         $form->radio(TeamWorkerModel::F_status, __(TeamWorkerModel::Note[TeamWorkerModel::F_status]))
             ->options($this->setLang(TeamWorkerModel::StatusArray))->default(TeamWorkerModel::status_1);
+        $form->radio(TeamWorkerModel::F_type, __(TeamWorkerModel::Note[TeamWorkerModel::F_type]))
+            ->options($this->setLang(TeamWorkerModel::TypeArray))->default(TeamWorkerModel::type_1);
 
         $form->footer(function ($footer) {
             $footer->disableViewCheck();

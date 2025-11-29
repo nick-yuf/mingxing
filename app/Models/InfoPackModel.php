@@ -6,6 +6,7 @@
 namespace App\Models;
 
 use App\Models\Common\BaseModel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class InfoPackModel extends BaseModel
 {
@@ -18,18 +19,18 @@ class InfoPackModel extends BaseModel
     /*
      * 数据库字段
      */
-    const F_id = 'id',F_contract_id = 'contract_id',F_worker_id = 'worker_id',F_pack_no = 'pack_no',F_transport_no = 'transport_no',F_box_count = 'box_count',F_product_level = 'product_level',F_in_3 = 'in_3',F_in_4 = 'in_4',F_in_5 = 'in_5',F_in_6 = 'in_6',F_in_7 = 'in_7',F_in_8 = 'in_8',F_in_cl = 'in_cl',F_staff_id = 'staff_id',F_user_id = 'user_id',F_created_at = 'created_at',F_updated_at = 'updated_at',F_deleted_at = 'deleted_at';
+    const F_id = 'id',F_orchard_id = 'orchard_id',F_contract_id = 'contract_id',F_worker_id = 'worker_id',F_delivery_date = 'delivery_date',F_pack_no = 'pack_no',F_transport_no = 'transport_no',F_box_count = 'box_count',F_product_level = 'product_level',F_in_4 = 'in_4',F_in_5 = 'in_5',F_in_6 = 'in_6',F_in_7 = 'in_7',F_in_8 = 'in_8',F_in_cl = 'in_cl',F_staff_id = 'staff_id',F_user_id = 'user_id',F_created_at = 'created_at',F_updated_at = 'updated_at',F_deleted_at = 'deleted_at';
 
     public static $tableComment='装箱数据';
 
     const Note = [
         self::F_contract_id => '合同',
-        self::F_worker_id => '劳工队',
+        self::F_worker_id => '劳工组',
+        self::F_delivery_date => '送达日期',
         self::F_pack_no => '物流号',
-        self::F_transport_no => '运送班次',
+        self::F_transport_no => '运载车次',
         self::F_box_count => '装箱数',
         self::F_product_level => '品级',
-        self::F_in_3 => '3把',
         self::F_in_4 => '4把',
         self::F_in_5 => '5把',
         self::F_in_6 => '6把',
@@ -37,8 +38,8 @@ class InfoPackModel extends BaseModel
         self::F_in_8 => '8把',
         self::F_in_cl => 'cl',
         self::F_staff_id => '统计人',
+        self::F_user_id => '操作人',
     ];
-
 
     //level：1 A，2 B
     const product_level_1 = 1, product_level_2 = 2;
@@ -46,4 +47,36 @@ class InfoPackModel extends BaseModel
         self::product_level_1 => 'A级',
         self::product_level_2 => 'B级',
     ];
+
+    public function worker(): HasOne
+    {
+        return $this->hasOne(TeamWorkerModel::class, TeamWorkerModel::F_id, self::F_worker_id);
+    }
+
+    public function staff(): HasOne
+    {
+        return $this->hasOne(TeamStaffModel::class, TeamStaffModel::F_id, self::F_staff_id);
+    }
+
+    public function getCountByOrchard($orchard): int
+    {
+        return self::query()
+            ->where(self::F_orchard_id, $orchard)
+            ->count();
+    }
+
+    public function getTotalByOrchard($orchard,$sumColumn): int
+    {
+        return self::query()
+            ->where(self::F_orchard_id, $orchard)
+            ->sum($sumColumn);
+    }
+
+    public function getTotalByOrchardLevel($orchard,$level): int
+    {
+        return self::query()
+            ->where(self::F_orchard_id, $orchard)
+            ->where(self::F_product_level, $level)
+            ->sum(self::F_box_count);
+    }
 }

@@ -9,9 +9,14 @@ use App\Models\TeamWorkerModel;
 class TeamLogic extends BaseLogic
 {
 
-    public function workerList(): array
+    public function workerList($type): array
     {
-        $data = TeamWorkerModel::query()
+        $query = TeamWorkerModel::query();
+
+        if($type) {
+            $query->where(TeamWorkerModel::F_type,$type);
+        }
+        $data = $query
             ->where(TeamWorkerModel::F_status,TeamWorkerModel::status_1)
             ->get();
 
@@ -19,18 +24,13 @@ class TeamLogic extends BaseLogic
             return [];
         }
 
-        $array = $data->map(function ($item) {
+        return $data->map(function ($item) {
             return [
                 'id' => $item[TeamWorkerModel::F_id],
                 'text' => $item[TeamWorkerModel::F_worker_no],
             ];
         })->toArray();
 
-        $array[] = [
-            'id' => 0,
-            'text' => '采购可不选',
-        ];
-        return $array;
     }
 
     public function staffList(): array

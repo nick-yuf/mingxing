@@ -5,8 +5,10 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\Info\Pack;
 use App\Models\FinanceContractModel;
 use App\Models\InfoOrchardModel;
+use App\Models\TeamWorkerModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Widgets\InfoBox;
 use Encore\Admin\Widgets\Table;
 
 class InfoOrchardController extends BaseController
@@ -34,19 +36,43 @@ class InfoOrchardController extends BaseController
         $grid->column(InfoOrchardModel::F_id, __('ID'))->sortable();
         $grid->column(InfoOrchardModel::F_orchard_name, __(InfoOrchardModel::Note[InfoOrchardModel::F_orchard_name]));
         $grid->column('contract.contract_no', __(InfoOrchardModel::Note[InfoOrchardModel::F_contract_id]))->modal(__(InfoOrchardModel::Note[InfoOrchardModel::F_contract_id]), function ($model) {
+            $worker = TeamWorkerModel::getInstance()->getOneById(($model['contract'][FinanceContractModel::F_worker_id]));
+            $workerName  = $worker ? $worker[TeamWorkerModel::F_worker_no] : '';
             return new Table(['#' . __('Param') . '#', '#' . __('Value') . '#'], [
                 [__(FinanceContractModel::Note[FinanceContractModel::F_contract_no]), $model['contract'][FinanceContractModel::F_contract_no]],
                 [__(FinanceContractModel::Note[FinanceContractModel::F_supplier_name]), $model['contract'][FinanceContractModel::F_supplier_name]],
                 [__(FinanceContractModel::Note[FinanceContractModel::F_supplier_phone]), $model['contract'][FinanceContractModel::F_supplier_phone]],
                 [__(FinanceContractModel::Note[FinanceContractModel::F_tonnage]), $model['contract'][FinanceContractModel::F_tonnage]],
                 [__(FinanceContractModel::Note[FinanceContractModel::F_deposit]), $model['contract'][FinanceContractModel::F_deposit]],
+                [__(FinanceContractModel::Note[FinanceContractModel::F_worker_id]), $workerName],
                 [__(FinanceContractModel::Note[FinanceContractModel::F_remark]), $model['contract'][FinanceContractModel::F_remark]],
             ], ['table', 'table-bordered', 'table-condensed', 'table-striped']);
         })->width(200);
-        $grid->column(InfoOrchardModel::F_start_date, __(InfoOrchardModel::Note[InfoOrchardModel::F_start_date]));
-        $grid->column(InfoOrchardModel::F_shipment_total, __(InfoOrchardModel::Note[InfoOrchardModel::F_shipment_total]))->width(100);
-        $grid->column(InfoOrchardModel::F_box_total, __(InfoOrchardModel::Note[InfoOrchardModel::F_box_total]))->width(100);
-//        $grid->column(InfoOrchardModel::F_remark, __(InfoOrchardModel::Note[InfoOrchardModel::F_remark]));
+
+        $grid->column('11', '蕉园详情')->modal('蕉园详情', function ($model) {
+            return new Table(['#' . __('Param') . '#', '#' . __('Value') . '#'], [
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_box_total]), $model[InfoOrchardModel::F_box_total]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_shipment_total]), $model[InfoOrchardModel::F_shipment_total]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_a]), $model[InfoOrchardModel::F_in_a]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_b]), $model[InfoOrchardModel::F_in_b]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_4]), $model[InfoOrchardModel::F_in_4]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_5]), $model[InfoOrchardModel::F_in_5]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_6]), $model[InfoOrchardModel::F_in_6]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_7]), $model[InfoOrchardModel::F_in_7]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_8]), $model[InfoOrchardModel::F_in_8]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_in_cl]), $model[InfoOrchardModel::F_in_cl]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_remark]), $model[InfoOrchardModel::F_remark]],
+                [__(InfoOrchardModel::Note[InfoOrchardModel::F_start_date]), $model[InfoOrchardModel::F_start_date]],
+            ], ['table', 'table-bordered', 'table-condensed', 'table-striped']);
+        })->width(100);
+
+        $grid->column('22','蕉园成本')->modal('蕉园成本', function ($model) {
+            return new InfoBox('','','','','1000000');
+        })->width(100);
+        $grid->column('33','装箱组成本')->modal('装箱组成本', function ($model) {
+            return new InfoBox('','','','','1000000');
+        })->width(100);
+
         $grid->column('user.name', __(InfoOrchardModel::Note[InfoOrchardModel::F_user_id]));
 
         $grid->disableExport();

@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\InfoPackModel;
 use App\Models\InfoStripModel;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -55,14 +54,15 @@ class InfoStripController extends BaseController
      */
     protected function form(): Form
     {
-        $form = new Form(new InfoPackModel());
+        $form = new Form(new InfoStripModel());
 
-        $form->text(InfoPackModel::F_contract_id, __(InfoPackModel::Note[InfoPackModel::F_contract_id]))->required();
-        $form->text(InfoPackModel::F_transport_no, __(InfoPackModel::Note[InfoPackModel::F_transport_no]))->required();
-        $form->text(InfoPackModel::F_box_count, __(InfoPackModel::Note[InfoPackModel::F_box_count]))->required();
-        $form->radio(InfoPackModel::F_product_level, __(InfoPackModel::Note[InfoPackModel::F_product_level]))
-            ->options($this->setLang(InfoPackModel::LevelArray))->default(InfoPackModel::product_level_1);
-        $form->select(InfoPackModel::F_staff_id, __(InfoPackModel::Note[InfoPackModel::F_staff_id]))->options('/api/team/staff')->required();
+        $form->text(InfoStripModel::F_strip_no, __(InfoStripModel::Note[InfoStripModel::F_strip_no]))->required();
+        $form->date(InfoStripModel::F_arrive_date, __(InfoStripModel::Note[InfoStripModel::F_arrive_date]));
+        $form->date(InfoStripModel::F_leave_date, __(InfoStripModel::Note[InfoStripModel::F_leave_date]));
+        $form->date(InfoStripModel::F_close_date, __(InfoStripModel::Note[InfoStripModel::F_close_date]));
+        $form->number(InfoStripModel::F_box_total, __(InfoStripModel::Note[InfoStripModel::F_box_total]))->default(0);
+        $form->number(InfoStripModel::F_boxA_total, __(InfoStripModel::Note[InfoStripModel::F_boxA_total]))->default(0);
+        $form->number(InfoStripModel::F_boxB_total, __(InfoStripModel::Note[InfoStripModel::F_boxB_total]))->default(0);
 
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
