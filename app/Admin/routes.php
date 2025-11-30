@@ -34,6 +34,7 @@ Route::group([
         $route->resource('strip', 'InfoStripController')->names('info#strip');
         $route->resource('load', 'InfoLoadController')->names('info#load');
         $route->resource('pack', 'InfoPackController')->names('info#pack');
+        $route->resource('pack_logistics', 'InfoPackLogisticsController')->names('info#pack_logistics');
     });
 
     //finance

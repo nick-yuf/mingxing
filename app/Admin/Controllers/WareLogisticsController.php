@@ -61,6 +61,8 @@ class WareLogisticsController extends BaseController
             ->options($this->setLang(WareLogisticsModel::ActionArray))->default(WareLogisticsModel::action_1);
         $form->date(WareLogisticsModel::F_action_date,__(WareLogisticsModel::Note[WareLogisticsModel::F_action_date]))->required();
         $form->number(WareLogisticsModel::F_count, __(WareLogisticsModel::Note[WareLogisticsModel::F_count]))->required()->default(0);
+        $form->select(WareLogisticsModel::F_contract_id, __(WareLogisticsModel::Note[WareLogisticsModel::F_contract_id]))->options('/api/finance/contract')->required();
+
         //暂时默认入库
         // $form->radio(WareLogisticsModel::F_is_save, __(WareLogisticsModel::Note[WareLogisticsModel::F_is_save]))
         //     ->options($this->setLang(WareLogisticsModel::IsSaveArray))->default(WareLogisticsModel::is_save_0);

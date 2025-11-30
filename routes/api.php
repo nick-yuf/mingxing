@@ -35,6 +35,10 @@ $api->version(
             $api->any('create-model', 'HomeController@createModel')->name('createModel');
         });
 
+        $api->group(['prefix' => 'info'], function ($api) {
+            $api->any('pack_no', 'InfoController@packNo')->name('info#packNo');
+        });
+
         $api->group(['prefix' => 'ware'], function ($api) {
             $api->any('goods', 'WareController@goods')->name('ware#goods');
         });

@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Info\Pack;
+use App\Admin\Actions\Info\PackLogistics;
 use App\Models\FinanceContractModel;
 use App\Models\InfoOrchardModel;
 use App\Models\TeamWorkerModel;
@@ -49,7 +50,7 @@ class InfoOrchardController extends BaseController
             ], ['table', 'table-bordered', 'table-condensed', 'table-striped']);
         })->width(200);
 
-        $grid->column('11', '蕉园详情')->modal('蕉园详情', function ($model) {
+        $grid->column('11', '蕉园信息')->modal('蕉园总成本：100000', function ($model) {
             return new Table(['#' . __('Param') . '#', '#' . __('Value') . '#'], [
                 [__(InfoOrchardModel::Note[InfoOrchardModel::F_box_total]), $model[InfoOrchardModel::F_box_total]],
                 [__(InfoOrchardModel::Note[InfoOrchardModel::F_shipment_total]), $model[InfoOrchardModel::F_shipment_total]],
@@ -66,21 +67,18 @@ class InfoOrchardController extends BaseController
             ], ['table', 'table-bordered', 'table-condensed', 'table-striped']);
         })->width(100);
 
-        $grid->column('22','蕉园成本')->modal('蕉园成本', function ($model) {
-            return new InfoBox('','','','','1000000');
-        })->width(100);
-        $grid->column('33','装箱组成本')->modal('装箱组成本', function ($model) {
-            return new InfoBox('','','','','1000000');
+        $grid->column('22','装箱组信息')->modal('装箱组信息', function ($model) {
+            return new InfoBox('','','','','<br>装箱组成本：1000<br>物料成本：111111');
         })->width(100);
 
         $grid->column('user.name', __(InfoOrchardModel::Note[InfoOrchardModel::F_user_id]));
 
         $grid->disableExport();
-
         $grid->actions(function ($actions) {
             $actions->disableView();
             $actions->disableDelete();
             $actions->add(new Pack());
+            $actions->add(new PackLogistics());
         });
 
         return $grid;

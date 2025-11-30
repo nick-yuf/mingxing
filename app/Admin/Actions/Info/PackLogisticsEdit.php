@@ -4,7 +4,7 @@ namespace App\Admin\Actions\Info;
 
 use Encore\Admin\Actions\RowAction;
 
-class LoadEdit extends RowAction
+class PackLogisticsEdit extends RowAction
 {
     public $name = '';
 
@@ -22,7 +22,7 @@ class LoadEdit extends RowAction
     {
         $this->name = trans('admin.edit');
 
-        return "/admin/info/load/".$this->pk."/edit?strip_id=".$this->id;
+        return "/admin/info/pack_logistics/".$this->pk."/edit?orchard_id=".$this->id;
     }
 
 }

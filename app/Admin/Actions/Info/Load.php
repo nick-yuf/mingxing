@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Admin\Actions\Load;
+namespace App\Admin\Actions\Info;
 
+use App\Models\InfoLoadModel;
 use Encore\Admin\Actions\RowAction;
 
 class Load extends RowAction
@@ -10,9 +11,8 @@ class Load extends RowAction
 
     public function href(): string
     {
-        $this->name = __('Load');
-
-        return "/admin/info/load?carId={$this->getKey()}";
+        $this->name = __(InfoLoadModel::$tableComment);
+        return "/admin/info/load?strip_id={$this->getKey()}";
     }
 
 }

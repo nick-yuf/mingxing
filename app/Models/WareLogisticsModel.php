@@ -18,7 +18,7 @@ class WareLogisticsModel extends BaseModel
     /*
      * 数据库字段
      */
-    const F_id = 'id',F_goods_id = 'goods_id',F_action = 'action',F_is_save = 'is_save',F_count = 'count',F_worker_id = 'worker_id',F_staff_id = 'staff_id',F_user_id = 'user_id',F_remark = 'remark',F_action_date = 'action_date',F_created_at = 'created_at',F_updated_at = 'updated_at',F_deleted_at = 'deleted_at';
+    const F_id = 'id',F_goods_id = 'goods_id',F_action = 'action',F_is_save = 'is_save',F_count = 'count',F_contract_id = 'contract_id',F_worker_id = 'worker_id',F_staff_id = 'staff_id',F_user_id = 'user_id',F_remark = 'remark',F_action_date = 'action_date',F_created_at = 'created_at',F_updated_at = 'updated_at',F_deleted_at = 'deleted_at';
 
     public static $tableComment = '仓库物流信息';
     const Note = [
@@ -26,8 +26,9 @@ class WareLogisticsModel extends BaseModel
         self::F_action => '操作行为',
         self::F_is_save => '是否入库',
         self::F_count => '数量',
-        self::F_worker_id => '劳工队',
+        self::F_worker_id => '劳工组',
         self::F_staff_id => '核对员工',
+        self::F_contract_id => '蕉园合同',
         self::F_user_id => '操作人',
         self::F_remark => '备注',
         self::F_action_date => '操作时间',
